@@ -50,7 +50,16 @@ func (r *ConfigReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 	_ = log.FromContext(ctx)
 
 
-	// TODO(user): your logic here
+	cronjobList = &batchv1.CronjobList{}
+	opts := []client.ListOption{
+		client.MatchingFiels{"metadata.annotations.tzguardian\.gusk\.io\/managed": "true"},
+	}
+	err := r.List(ctx, cronjobList, opts)
+
+	// Retrieve all managed CronJob
+	// Evaluate crontab + timezone
+	// Calculate resulting crontab using UTC TZ
+	// Patching CronJob
 
 	return ctrl.Result{}, nil
 }
